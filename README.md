@@ -5,13 +5,12 @@
 - [前提](#前提)
 - [変数](#変数)
 - [定数](#定数)
-- [ハッシュ](#ハッシュ)
-- [シンボル](#シンボル)
+- [配列定数](#配列定数)
 - [配列](#配列)
 - [制御構造](#制御構造)
 - [式](#式)
 - [キャスト](#キャスト)
-- [メソッド定義](#メソッド定義)
+- [メソッド](#メソッド)
 - [クラス](#クラス)
 - [モジュール](#モジュール)
 - [テスト](#テスト)
@@ -26,6 +25,10 @@
 
 **環境** - Ruby 3.3で実行しています。
 
+**インタラクティブなRuby** - Rubyの対話インターフェースです。ターミナル等にて、`irb`で起動、`quit`で終了します。
+
+**RDoc** - Rubyのドキュメントをターミナル等で閲覧するツールです。ターミナル等にて`ri`で起動、`q`で終了します。
+
 **出力** - このリポジトリでは、説明のために出力を多く使用します。
 ```rb
 print "Hello"   # 改行なし
@@ -35,30 +38,25 @@ p "Hello"       # 詳細
 
 **コメントアウト** - 以下の方法でコメントアウトできます。
 ```rb
-# Comment 1
+# コメント 1
 
 =begin
-Comment 2
+コメント 2
 =end
 ```
 
-**プログラム実行** - `ruby ***.rb`で実行します。
+**プログラム実行** - `ruby [プログラム].rb`で実行します。
 ```sh
-annesmithog@mba about-ruby % ruby ./sample/hello_world.rb
-Hello, World!
+ruby ./sample/hello_world.rb
 ```
-
-**インタラクティブなRuby** - `irb`で開始、`quit`で終了します。
-
-**RDoc** - `ri`で開始、`q`で終了します。
 
 [⬆︎目次に戻る](#目次)
 
 ## 変数
 
-一般的な変数です。
+**変数** - 一般的な変数です。Rubyの変数には型がありません。
 ```rb
-name = "Anne"
+name = 'Anne'
 age = 21
 ```
 
@@ -66,91 +64,97 @@ age = 21
 
 ## 定数
 
-**一般的な定数**
+**定数** - 一般的な定数です。アルファベット大文字で始まる識別子が定数とされます。
+
+**再代入：可能(警告)、破壊的変更：可能**
 ```rb
-# 再代入：可能(警告)、破壊的変更：可能
-LANGUAGE1 = 'ja'
-p LANGUAGE1
-
-# 再代入：可能(警告)、破壊的変更：不可
-LANGUAGE2 = 'ja'
-LANGUAGE2.freeze
-p LANGUAGE2
-
-# 再代入：不可、破壊的変更：可能
-module LANGUAGE3
-    DEFAULT_LANG = 'ja'
-end
-LANGUAGE3::DEFAULT_LANG.freeze
-p LANGUAGE3::DEFAULT_LANG
-
-# 再代入：不可、破壊的変更：不可
-module LANGUAGE4
-    DEFAULT_LANG = 'ja'.freeze
-end
-LANGUAGE4.freeze
-p LANGUAGE4::DEFAULT_LANG
+Ver = 'ver 1.0.0'
+puts Ver
 ```
 
-**配列定数**
+**再代入：可能(警告)、破壊的変更：不可**
 ```rb
-# 配列自体を不変にする (危険)
-LANGUAGES1 = ['ja', 'en'].freeze
-p LANGUAGES1[0]
+VER = 'ver 2.0.0'
+VER.freeze
+puts VER
+```
 
-# 各要素を不変にする (面倒)
-LANGUAGES2 = ['ja'.freeze, 'en'.freeze]
-p LANGUAGES2[0]
+**再代入：不可、破壊的変更：可能**
+```rb
+module VER
+  DEFAULT_VER = '3.0.0'
+end
+VER::DEFAULT_VER.freeze
+puts VER::DEFAULT_VER
+```
 
-# mapで各要素を不変にする
-LANGUAGES3 = ['ja', 'en'].map(&:freeze).freeze
-p LANGUAGES3[0]
+**再代入：不可、破壊的変更：不可**
+```rb
+module VER
+  DEFAULT_VER = '4.0.0'.freeze
+end
+VER.freeze
+puts VER::DEFAULT_VER
 ```
 
 [⬆︎目次に戻る](#目次)
 
-## ハッシュ
+## 配列定数
 
-**ハッシュ** - キーと値を組み合わせて保持するデータ構造です。
+**(危険)配列自体を不変にする**
 ```rb
-numbers = {'one' => 1, 'two' => 2, 'three' => 3}
-numbers.each do |key, value|
-  p "#{key} => #{value}"
-end
+LANGUAGES = ['ja', 'en'].freeze
+puts LANGUAGES[0]
 ```
 
-[⬆︎目次に戻る](#目次)
-
-## シンボル
-
-**シンボル** - 不変且つ同一のシンボル同士でしか比較が一致しませんが、メモリ消費が少なくパフォーマンスが高いです。
+**(面倒)各要素を不変にする**
 ```rb
-s = 'str'
-p s         # "str"
-p s.class   # String
-
-sym = :sym
-p sym       # :sym
-p sym.class # Symbol
+LANGUAGES = ['ja'.freeze, 'en'.freeze]
+puts LANGUAGES[0]
 ```
 
-**ハッシュと一緒に使う**
+**(おすすめ)mapで各要素を不変にする**
 ```rb
-numbers = {one: :ichi, two: :ni, three: :san}
-numbers.each do |k, v|
-  p "#{k} => #{v}"
-end
+LANGUAGES = ['ja', 'en'].map(&:freeze).freeze
+puts LANGUAGES[0]
 ```
 
 [⬆︎目次に戻る](#目次)
 
 ## 配列
 
-**配列**
+データ構造一覧は[こちら](#データ構造)。
+
+**Array** - 詳細は[こちら](./datastructure/array/README.md)。
 ```rb
 numbers = [10, 20, 30]
-numbers.each do |num|
-  p num
+
+numbers.each do |number|
+  puts number
+end
+```
+
+**ハッシュ** - 詳細は[こちら](./datastructure/hash/README.md)。
+```rb
+numbers = {'one' => 1, 'two' => 2, 'three' => 3}
+
+numbers.each do |key, value|
+  puts "#{key} => #{value}"
+end
+```
+
+**シンボル** - 詳細は[こちら](./datastructure/symbol/README.md)。
+```rb
+sym = :hello
+puts sym      # hello
+```
+
+**ハッシュ + シンボル**
+```rb
+numbers = {one: :ichi, two: :ni, three: :san}
+
+numbers.each do |key, value|
+  puts "#{key} => #{value}"
 end
 ```
 
@@ -158,117 +162,118 @@ end
 
 ## 制御構造
 
-`if`, `elsif`, `else` - 条件分岐
+`if`, `elsif`, `else`
 ```rb
 num = 0
 
 if num == 0
-    puts 'A'
+  puts 'A'
 elsif num > 0
-    puts 'B'
+  puts 'B'
 else
-    puts 'C'
+  puts 'C'
 end
 ```
 
-`case`, `when` - 条件分岐
+`case`, `when`
 ```rb
 score = 5
 
 case score
 when 1, 2
-    puts 'Low'
+  puts 'Low'
 when 3
-    puts 'Mid'
+  puts 'Mid'
 when 4, 5
-    puts 'High'
+  puts 'High'
 else
-    puts 'Dunno'
+  puts 'Dunno'
 end
 ```
 
-`for` - ループ
+`for`
 ```rb
-nums = [10, 20, 30]
-
-# 配列を出力
-for num in nums
-    puts num    # 10, 20, 30
+numbers = [10, 20, 30]
+for number in numbers
+  puts number # 0, 1, 2, 3
 end
 
-# 範囲を出力
 for i in 0..3
-    puts i      # 0, 1, 2, 3
+  puts i      # 0, 1, 2, 3
+end
+
+for i in 0...3
+  puts i      # 0, 1, 2
 end
 ```
 
-`while` - 条件がtrueである間ループします。
+`each`
+```rb
+numbers = [10, 20, 30]
+
+numbers.each do |number|
+  puts number # 10, 20, 30
+end
+```
+
+`while` - 条件がtrueである間、繰り返し処理を行います。
 ```rb
 i = 0
 
 while i < 5 do
-    puts i
-    i += 1
+  puts i      # 0, 1, 2, 3, 4
+  i += 1
 end
 ```
 
-`until` - 条件がfalseである間ループします。
+`until` - 条件がfalseである間、繰り返し処理を行います。
 ```rb
 i = 0
 
 until i == 5 do
-    puts i
-    i += 1
+  puts i      # 0, 1, 2, 3, 4
+  i += 1
 end
 ```
 
-`each` - オブジェクトを順番に処理します。
-```rb
-nums = {one: 1, two: 2, three: 3}
-
-nums.each do |key, value|
-    puts "#{key} -> #{value}"
-end
-```
-
-`times` - x回ループ
+`times` - 指定回数繰り返し処理を行います。
 ```rb
 3.times do |num|
-    puts num    # 0, 1, 2
+  puts num    # 0, 1, 2
 end
 ```
 
-`upto` - 増加ループ
+`upto` - 増加しながら繰り返し処理を行います。
 ```rb
 1.upto(3) do |num|
-    puts num    # 1, 2, 3
+  puts num    # 1, 2, 3
 end
 ```
 
-`downto` - 減少ループ
+`downto` - 減少しながら繰り返し処理を行います。
 ```rb
 5.downto(1) do |num|
-    puts num    # 5, 4, 3, 2, 1
+  puts num    # 5, 4, 3, 2, 1
 end
 ```
 
-`step` - 間隔を空けるループ
+`step` - 間隔を空けながら繰り返し処理を行います。
 ```rb
 1.step(10, 2) do |num|
-    puts num    # 1, 3, 5, 7, 9
+  puts num    # 1, 3, 5, 7, 9
 end
 ```
 
-`loop` - breakしない限りループします。
+`loop` - `break`しない限り、繰り返し処理を続けます。
 ```rb
 i = 0
 
 loop do
-    puts i
-    i += 1
-    if i == 5
-        break
-    end
+  puts i
+  i += 1
+  if i == 5
+    break
+  end
 end
 ```
 
@@ -289,29 +294,26 @@ end
 **条件演算子 (三項演算子)**
 ```rb
 country = 'ja'
-puts country == 'ja' ? 'こんにちは' : 'Hello'
+puts country == 'ja' ? 'こんにちは' : 'Hello'   # こんにちは
 ```
 
 **代入式**
 ```rb
-s = "ABC"
-
-if (x ||= s) == "ABC"
-    puts s  # ABC
-end
-puts x      # ABC
+s = 'ABC'
+puts x ||= s  # ABC
+puts x        # ABC
 ```
 
-**比較**: `equal?`, `==`よりも厳格な`eql?`を使うべきです。
+**比較** - `equal?`や`==`, `===`などありますが、厳格な比較をする場合`eql?`を使用します。
 ```rb
-num = 10
+number = 10
 
-if num.eql?(10)
+if number.eql?(10)
   puts 'OK'
 end
 ```
 
-**安全ナビゲーション演算子** - `&.`をつけることで、対象が`nil`の場合でもエラーにしません。
+**安全ナビゲーション演算子** - `&.`をつけることで、対象が`nil`の場合でもエラーが発生しないようにできます。
 ```rb
 txt = nil
 puts txt&.upcase    # 何もしない
@@ -323,17 +325,17 @@ puts txt.upcase     # エラー (undefined method `upcase' for nil)
 ## キャスト
 
 ```rb
-p 10.to_s                     # 文字列に変換  "10"
-p 10.to_f                     # 小数に変換    10.0
-p '10'.to_i                   # 整数に変換    10
-p (0..3).to_a                 # 配列に変換    [0, 1, 2, 3]
-p [[:one, 1], [:two, 2]].to_h # ハッシュに変換  {:one=>1, :two=>2}
-p 'anne'.to_sym               # シンボルに変換  :anne
+puts 10.to_s.class            # String
+puts 10.to_f.class            # Float
+puts '10'.to_i.class          # Integer
+puts (0..3).to_a.class        # Array
+puts [[:one, 1]].to_h.class   # Hash
+puts 'anne'.to_sym.class      # Symbol
 ```
 
 [⬆︎目次に戻る](#目次)
 
-## メソッド定義
+## メソッド
 
 **基本** - `return`は基本省略します。
 ```rb
@@ -341,103 +343,110 @@ def sum(a, b)
   a + b
 end
 
-puts sum(10, 20)    # 30
+puts sum(10, 20)  # 30
 ```
 
 `undef` - メソッドを削除します。
 ```rb
-def hello
-  'Hello!'
-end
-
-puts hello  # Hello!
-undef hello
+undef sum
 ```
 
 `!!` - 真偽値の型変換でtrueまたはfalseに変換します。
 ```rb
-# def user_exists?
-#   find_user ? true : false
-# end
+- def user_exists?
+-   find_user ? true : false
+- end
 
-def user_exists?
-  !!find_user
-end
++ def user_exists?
++   !!find_user
++ end
 ```
 
-`?` - 真偽値を返すメソッドは`?`をつけます。
+`?` - 真偽値を返すメソッドには`?`をつけます。
 ```rb
-def is_zero?(num)
-    num == 0 ? true : false
+def is_one?(number)
+  !!number.eql?(1)
 end
-puts is_zero?(0)    # true
-puts is_zero?(1)    # false
+
+puts is_one?(1)   # true
+puts is_one?(0)   # false
 ```
 
-`!` - 破壊的メソッドは`!`をつけます。元のオブジェクトを変更します。
+`!` - 元のオブジェクトを変更する破壊的メソッドには`!`をつけます。
 ```rb
 name = 'anne'
-puts name.upcase    # ANNE
-puts name           # anne
-puts name.upcase!   # ANNE
-puts name           # ANNE
+name.upcase!
+puts name     # ANNE
 ```
 
-**特異メソッド (例1)** - 特定のオブジェクトに紐づきます。
+**特異メソッド** - 特定のオブジェクトに紐づくメソッドです。
 ```rb
-greet = 'Hello'
+name = 'Anne'
 
-def greet.ja
-  'こんにちは'
+def name.ja
+  'アン'
 end
 
-puts greet      # Hello
-puts greet.ja   # こんにちは
-```
-
-**特異メソッド (例2)** - 特定のオブジェクトに紐づきます。
-```rb
-greet = 'Hello'
-
-class << greet
-  def ja
-    'こんにちは'
-  end
-end
-
-puts greet      # Hello
-puts greet.ja   # こんにちは
+puts name     # Anne
+puts name.ja  # アン
 ```
 
 [⬆︎目次に戻る](#目次)
 
 ## クラス
 
-**クラス・インスタンス**
+**基本** - 以下の例には`attr_reader`(読み取り専用のインスタンス変数)、`initialize`(コンストラクタ)が含まれます。
 ```rb
 class Human
-  attr_reader :name         # 読み取り専用のインスタンス変数
-  attr_accessor :score      # 外部から読み書き可能なインスタンス変数
-  COUNTRY = 'ja'            # クラス定数
+  attr_reader :name
 
-  # コンストラクタ
   def initialize(name)
     @name = name
   end
 
-  def output_name
-    puts "Name: #{@name}"
-  end
-
-  def show_score
-    puts "Score: #{@score}"
+  def introduce
+    puts "My name is #{@name}"
   end
 end
 
-anne = Human.new('Anne')
-anne.output_name          # Name: Anne
-anne.score = 90
-anne.show_score           # Score: 90
+h = Human.new('Anne')
+puts h.name   # Anne
+h.introduce   # My name is Anne
+```
+
+**ネスト(1)** - クラス定義は入れ子にして定義できます。
+```rb
+class Human
+  class Skill
+  end
+end
+```
+
+**ネスト(2)** - 既にクラスが定義されている場合、以下の方法でも入れ子にして定義できます。
+```rb
+class Human
+end
+
+class Human::Skill
+end
+```
+
+**クラス定数**
+```rb
+class Human
+  COUNTRY = 'ja'
+end
+```
+
+`attr_accessor` - 外部から読み書き可能なインスタンス変数です。
+```rb
+class Human
+  attr_accessor :age
+end
+
+h = Human.new
+h.age = 20
+puts h.age    # 20
 ```
 
 **クラスメソッド** - クラスから直接アクセスできるメソッドです。
@@ -454,49 +463,53 @@ class User
   end
 end
 
-names = ['anne', 'john', 'paul']
+names = ['Anne', 'John', 'Paul']
 users = User.create_users(names)
 ```
 
 **継承**
 ```rb
-class Animal
+class Human
   attr_reader :name
   def initialize(name)
     @name = name
   end
 end
 
-class Dog < Animal
-  attr_reader :type
-  def initialize(name, type)
+class Japanese < Human
+  attr_reader :feel_shiki
+  def initialize(name, feel_shiki)
     super(name)
-    @type = type
+    @feel_shiki = feel_shiki
   end
 end
 
-animal = Animal.new('X')
-dog = Dog.new('Doggo', 'Shiba')
+jp = Japanese.new('Anne', true)
+puts jp.name        # Anne
+puts jp.feel_shiki  # true
 ```
 
-**privateメソッド**
+**privateメソッド(1)** - `class << self`
 ```rb
-# class << self
-class User1
+class User
   class << self
     private
     def hello() puts 'Hello' end
   end
 end
+```
 
-# 後から可視性を変更する
-class User2
+**privateメソッド(2)** - 後から可視性を変更する
+```rb
+class User
   def hello() puts 'Hello' end
     private :hello
 end
+```
 
-# private def... を使う
-class User3
+**privateメソッド(3)** - private defを使用
+```rb
+class User
   private def hello() puts 'Hello' end
 end
 ```
@@ -505,9 +518,7 @@ end
 
 ## モジュール
 
-**モジュール** - モジュールはクラスと違ってインスタンス化できません。
-
-**モジュール定数**
+**基本** - クラスと違ってインスタンス化できません。
 ```rb
 module Mod
   VER = 2025
@@ -516,11 +527,11 @@ end
 puts Mod::VER
 ```
 
-**インスタンスメソッド** - `module_function`を使用すると、モジュール内のメソッドをモジュールの特異メソッドとしても呼び出せるようになります。
+**インスタンスメソッド** - `module_function`を使用してモジュール内のメソッドを特異メソッドとして呼び出せるようになります。
 ```rb
 module Mod
   def hello
-    puts 'Hello!'
+    puts 'Hello'
   end
 
   module_function :hello
@@ -536,8 +547,6 @@ module Mod
     puts 'Hello'
   end
 end
-
-Mod.hello
 ```
 
 `include` - モジュールのメソッドをインスタンスメソッドとしてクラスに組み込みます。
@@ -571,22 +580,35 @@ Obj.hello
 
 ## テスト
 
-**テストバージョン確認**
+**テストバージョンの確認** - ターミナル等から以下のコマンドで確認できます。
 ```sh
-about-ruby % ruby -r minitest -e "puts Minitest::VERSION"
+ruby -r minitest -e "puts Minitest::VERSION"
 ```
 
-**基本** - `assert_equal A, B`はAとBが一致すればパス、`assert A`はAが真であればパス、`refute A`はAが偽であればパスします。
+**基本**
 ```rb
 require 'minitest/autorun'
 
 class SampleTest < Minitest::Test
   def test_sample
     assert_equal 'RUBY', 'ruby'.upcase
-    assert true
-    refute false
   end
 end
+```
+
+`assert_equal` - `assert_equal A, B`であれば、AとBが一致すればパスします。
+```rb
+assert_equal 'RUBY', 'ruby'.upcase
+```
+
+`assert` - `assert A`であれば、Aが真の場合パスします。
+```rb
+assert true
+```
+
+`refute` - `refute A`であれば、Aが偽の場合パスします。
+```rb
+refute false
 ```
 
 [⬆︎目次に戻る](#目次)
@@ -594,23 +616,22 @@ end
 ## 例外
 
 **注意**
-
-- 安易に`rescue`のみを使わず、例外オブジェクト(`=> e`)を取得する。
-- 例外処理の対象範囲、対象クラスは極力絞り込む。
-- 例外処理よりも積極的に条件分岐を使う。
-- 予期しない条件の場合は異常終了させる。
+- 例外処理よりも条件分岐を使う。
+- 安易に`rescue`のみを使わずに、例外オブジェクト(`=> e`)を取得する。
+- 例外処理の範囲、クラスは極力絞り込む。
+- 予期しない条件で通った場合は異常終了させる。
 - 例外処理自体もテストする。
 
-`begin`, `rescue` - 例外の補足をします。
+**基本**
 ```rb
 begin
   puts 1 / 0
 rescue
-  puts 'エラー発生'
+  puts 'ERROR'
 end
 ```
 
-**例外オブジェクトからの情報取得** `=> e`で例外オブジェクトを取得し、そこからエラー情報を取得できます。
+**例外オブジェクト** - `=> e`で例外オブジェクトを取得し、そこからエラー情報を取得できます。
 ```rb
 begin
   puts 1 / 0
