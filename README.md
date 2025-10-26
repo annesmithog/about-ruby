@@ -18,6 +18,7 @@
 - [ライブラリ](#ライブラリ)
 - [Extra](#extra)
 - [データ構造](#データ構造)
+- [アルゴリズム](#アルゴリズム)
 
 [⬆︎目次トップに戻る](#目次)
 
@@ -29,14 +30,14 @@
 
 **RDoc** - Rubyのドキュメントをターミナル等で閲覧するツールです。ターミナル等にて`ri`で起動、`q`で終了します。
 
-**出力** - このリポジトリでは、説明のために出力を多く使用します。
+このリポジトリでは、説明のために**出力**を多く使用します。
 ```rb
 print "Hello"   # 改行なし
 puts "Hello"    # 改行あり
 p "Hello"       # 詳細
 ```
 
-**コメントアウト** - 以下の方法でコメントアウトできます。
+以下の方法で**コメントアウト**できます。
 ```rb
 # コメント 1
 
@@ -45,7 +46,7 @@ p "Hello"       # 詳細
 =end
 ```
 
-**プログラム実行** - `ruby [プログラム].rb`で実行します。
+`ruby [プログラム].rb`で**プログラムを実行**します。
 ```sh
 ruby ./sample/hello_world.rb
 ```
@@ -54,7 +55,7 @@ ruby ./sample/hello_world.rb
 
 ## 変数
 
-**変数** - 一般的な変数です。Rubyの変数には型がありません。
+一般的な変数です。Rubyの変数には型がありません。
 ```rb
 name = 'Anne'
 age = 21
@@ -64,7 +65,7 @@ age = 21
 
 ## 定数
 
-**定数** - 一般的な定数です。アルファベット大文字で始まる識別子が定数とされます。
+一般的な定数です。アルファベット大文字で始まる識別子が定数とされます。
 
 **再代入：可能(警告)、破壊的変更：可能**
 ```rb
@@ -746,39 +747,41 @@ puts x    # -1
 
 [⬆︎目次に戻る](#目次)
 
-<!--
 ## アルゴリズム
 
-### 探索
+探索
+- [線形探索](/lib/algorithms/search/linear_search.rb) - 配列を先頭から順番に調べ、目的の要素の位置を探します。
+- [二分探索](/lib/algorithms/search/binary_search.rb) - ソート済みの配列を二分しながら効率的に要素を探し、目的の要素の位置を返します。
+- [指数探索](/lib/algorithms/search/exponential_search.rb) - ソート済みの配列で範囲を指数的に広げながら二分探索し、目的の要素の位置を返します。
+- [貪欲法 (例: コイン問題)](/lib/algorithms/search/greedy_coin_change.rb) - その場で最適な選択を繰り返し、解を求めます。コイン問題では、用意されたコインの種類と求める合計をもとに必要なコインの種類を返します。
+--------------------------------------------------------------------------------------------------
+グラフアルゴリズム
+- [BFSを使用した迷路探索](/lib/algorithms/graph/bfs_maze.rb) - BFSを使用して最短経路を見つけ、最短距離を返します。
+- [DFSを使用した迷路探索](/lib/algorithms/graph/dfs_maze.rb) - DFSを使用して到達可能な経路を見つけ、その距離を返します。
+<!--
+- [ダイクストラ法](/lib/algorithms/graph/dijkstra.rb) - 負の辺がない場合のみ、単一の始点から各頂点への最短経路を求めて、各地点への最短距離を返します。
+- [ベルマンフォード法](/lib/algorithms/graph/bellman_ford.rb) - 負の辺があっても問題ないが負閉路の場合以外に限り、単一の始点から各頂点への最短経路を求めて、各地点への最短距離を返します。
+- [ワーシャル–フロイド法](/lib/algorithms/graph/floyd_warshall.rb) - 全ての頂点間の最短経路を求めて返します。
+- [プリム法](/lib/algorithms/graph/prim.rb) - 貪欲法で最小全域木を求めて返します。
+- [クラスカル法](/lib/algorithms/graph/kruskal.rb) - 辺が小さい順に選び、最小全域木を求めて返します。
+- [トポロジカルソート](/lib/algorithms/graph/topological_sort.rb) - 有向非巡回グラフのノードを依存関係に従って並べて返します。
+-->
+--------------------------------------------------------------------------------------------------
+ソート
+- [バブルソート](/lib/algorithms/sorting/bubble_sort.rb) - 隣り合う要素を比較しながら必要に応じて入れ替えを繰り返すソートです。
+- [選択ソート](/lib/algorithms/sorting/selection_sort.rb) - 未ソート部分から最小または最大の要素を選び先頭と交換するソートです。
+- [挿入ソート](/lib/algorithms/sorting/insertion_sort.rb) - 適切な位置を見つけて要素を挿入し、部分的に整列させるソートです。
+- [ヒープソート](/lib/algorithms/sorting/heap_sort.rb) - ヒープ構造を利用する効率的なソートです。
+- [マージソート](/lib/algorithms/sorting/merge_sort.rb) - 分割統治法を利用した安定したソートです。
+- [クイックソート](/lib/algorithms/sorting/quick_sort.rb) - 分割統治法を利用した不安定で高速なソートです。
+- [シェルソート](/lib/algorithms/sorting/shell_sort.rb) - 挿入ソートを改良し、間隔を縮めながら整列させるソートです。
+- [カウントソート](/lib/algorithms/sorting/counting_sort.rb) - 値の範囲が限られている場合に有効な非比較ソートです。
+- [基数ソート](/lib/algorithms/sorting/radix_sort.rb) - 整数の各桁ごとに処理する安定したソートです。
+--------------------------------------------------------------------------------------------------
 
-- [線形探索](/algo/search/linear_search.rb) - 要素を1つずつ調べる
-- [二分探索](/algo/search/binary_search.rb) - ソート済みの配列で中央を基準に分割しながら探索
-- [指数探索](/algo/search/exponential_search.rb) - ソート済みの配列で小さな範囲を指数的に探索し二分探索を行う
-- [貪欲法 (e.g. 最小コイン問題)](/algo/search/greedy_algorithm.rb) - 局所的に最適な選択を繰り返して全体としての最適解を目指す
+[⬆︎目次に戻る](#目次)
 
-### グラフアルゴリズム
-
-- [幅優先探索 (BFS)](/algo/graph/bfs.rb) - キューを使いレベルごとに探索
-- [深さ優先探索 (DFS)](/algo/graph/dfs.rb) - スタックまたは再帰を使いできる限り深く探索
-- [ダイクストラ法](/algo/graph/dijkstra.rb) - 単一始点の最短経路探索 (負の辺は不可)
-- [ベルマンフォード法](/algo/graph/bellman_ford.rb) - 重み付きグラフで単一始点の最短経路探索
-- [ワーシャル–フロイド法](/algo/graph/floyd_warshall.rb) - 全てのペアの最短経路を見つける
-- [プリム法](/algo/graph/prim.rb) - 最小全域木(MST) を求める貪欲法アルゴリズム
-- [クラスカル法](/algo/graph/kruskal.rb) - 最小全域木(MST) を求める
-- [トポロジカルソート](/algo/topological_sort.rb) - 有向非循環グラフにおいて、ノードを線形に並べる
-
-### ソート
-
-- [バブルソート](/algo/sort/bubble_sort.rb) - 隣接要素を比較し、入れ替えながら徐々にソート
-- [選択ソート](/algo/sort/selection_sort.rb) - 最小(または最大)値を見つけ、先頭と交換する
-- [挿入ソート](/algo/sort/insertion_sort.rb) - 挿入位置を見つけ、部分的にソートされた配列に要素を挿入
-- [ヒープソート](/algo/sort/heap_sort.rb) - ヒープを使い効率的にソート
-- [マージソート](/algo/sort/merge_sort.rb) - 分割統治法に基づく安定ソート
-- [クイックソート](/algo/sort/quick_sort.rb) - 分割統治法による高速な不安定ソート
-- [シェルソート](/algo/sort/shell_sort.rb) - 増加間隔の挿入ソートによる効率化
-- [カウントソート](/algo/sort/couning_sort.rb) - 数値範囲が限定された場合に有効な非比較ソート
-- [基数ソート](/algo/sort/redix_sort.rb) - 整数を各桁ごとに処理する効率的な安定ソート
-
+<!--
 ### 文字列
 
 - [KMP法](/algo/string/kmp.rb) - 部分文字列を効率的に検索
